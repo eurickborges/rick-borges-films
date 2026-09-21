@@ -131,7 +131,7 @@ body>header,body>.wrap,body>.footer{position:relative;z-index:1}
 .photo-example svg{width:64px;height:64px;flex:none;color:var(--gold)}
 .photo-example b{display:block;font-size:12px;margin-bottom:3px}
 .file-note{font-size:12px;color:var(--muted)}
-#sendStatus{margin:10px 0 0;color:var(--muted);font-size:12px;line-height:1.45}.primary:disabled{opacity:.62;cursor:not-allowed}.upload-progress{display:none;margin:14px 0 0;padding:13px;border:1px solid #3e4d58;border-radius:11px;background:#0d1419}.upload-progress.show{display:block}.upload-progress-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:9px;font-size:12px}.upload-progress-head span{color:#d8e1e6}.upload-progress-head strong{color:var(--gold);font-size:13px}.upload-progress-track{height:9px;border-radius:999px;background:#26313a;overflow:hidden}.upload-progress-bar{height:100%;width:0;background:linear-gradient(90deg,#c98e20,var(--gold));border-radius:inherit;transition:width .18s ease}.upload-progress small{display:block;margin-top:8px;color:var(--muted);font-size:10.5px;line-height:1.35}
+#sendStatus{margin:10px 0 0;color:var(--muted);font-size:12px;line-height:1.45}.site-version{max-width:1208px;margin:-54px auto 26px;padding:0 24px;text-align:center;color:#71808a;font-size:10px;letter-spacing:.12em;text-transform:uppercase}.primary:disabled{opacity:.62;cursor:not-allowed}.upload-progress{display:none;margin:14px 0 0;padding:13px;border:1px solid #3e4d58;border-radius:11px;background:#0d1419}.upload-progress.show{display:block}.upload-progress-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:9px;font-size:12px}.upload-progress-head span{color:#d8e1e6}.upload-progress-head strong{color:var(--gold);font-size:13px}.upload-progress-track{height:9px;border-radius:999px;background:#26313a;overflow:hidden}.upload-progress-bar{height:100%;width:0;background:linear-gradient(90deg,#c98e20,var(--gold));border-radius:inherit;transition:width .18s ease}.upload-progress small{display:block;margin-top:8px;color:var(--muted);font-size:10.5px;line-height:1.35}
 @media(max-width:680px){.upload-grid{grid-template-columns:1fr}.upload-card.full{grid-column:auto}}
 
 .outfit-picker-wrap{display:flex;flex-direction:column;gap:10px}
@@ -467,15 +467,19 @@ function setUploadProgress(percent,label){
 function extOf(file){const n=file?.name||'',i=n.lastIndexOf('.');return i>=0?n.slice(i).toLowerCase():''}
 function xhrUploadChunk(sessionUrl,chunk,start,total,mimeType,onProgress){
   return new Promise((resolve,reject)=>{
-    const xhr=new XMLHttpRequest();xhr.open('PUT',sessionUrl,true);
+    const xhr=new XMLHttpRequest();xhr.open('POST',BACKEND_URL+'/upload-chunk',true);
     xhr.setRequestHeader('Content-Type',mimeType||'application/octet-stream');
-    xhr.setRequestHeader('Content-Range',`bytes ${start}-${start+chunk.size-1}/${total}`);
+    xhr.setRequestHeader('X-Upload-Session',sessionUrl);
+    xhr.setRequestHeader('X-Upload-Start',String(start));
+    xhr.setRequestHeader('X-Upload-Total',String(total));
+    xhr.setRequestHeader('X-Upload-Mime',mimeType||'application/octet-stream');
     xhr.upload.onprogress=e=>{if(e.lengthComputable&&onProgress)onProgress(start+e.loaded)};
     xhr.onload=()=>{
-      if(xhr.status===200||xhr.status===201||xhr.status===308)return resolve(xhr.status);
-      reject(new Error(`Google Drive recusou uma parte do arquivo (${xhr.status}).`));
+      let data={};try{data=JSON.parse(xhr.responseText||'{}')}catch(e){}
+      if(xhr.status>=200&&xhr.status<300&&data.ok!==false)return resolve(data);
+      reject(new Error(data.error||`Falha ao enviar bloco pelo servidor (${xhr.status}).`));
     };
-    xhr.onerror=()=>reject(new Error('UPLOAD_RESPONSE_UNAVAILABLE'));
+    xhr.onerror=()=>reject(new Error('Não foi possível conectar ao servidor durante o envio do arquivo.'));
     xhr.onabort=()=>reject(new Error('O envio do arquivo foi cancelado.'));
     xhr.send(chunk);
   });
@@ -484,18 +488,17 @@ async function queryUploadSession(sessionUrl,total){
   return apiPost('/upload-query',{sessionUrl,total});
 }
 async function uploadFileResumable(file,sessionUrl,onProgress){
-  const CHUNK=8*1024*1024;if(!file.size)throw new Error(`O arquivo "${file.name}" está vazio.`);
+  const CHUNK=4*1024*1024;if(!file.size)throw new Error(`O arquivo "${file.name}" está vazio.`);
   let offset=0;
   while(offset<file.size){
     const end=Math.min(offset+CHUNK,file.size),chunk=file.slice(offset,end);
     let advanced=false,lastError=null;
     for(let attempt=1;attempt<=3;attempt++){
       try{
-        const status=await xhrUploadChunk(sessionUrl,chunk,offset,file.size,file.type||'application/octet-stream',onProgress);
-        if(status===200||status===201){if(onProgress)onProgress(file.size);return}
-        const state=await queryUploadSession(sessionUrl,file.size);
+        const state=await xhrUploadChunk(sessionUrl,chunk,offset,file.size,file.type||'application/octet-stream',onProgress);
         if(state.complete){if(onProgress)onProgress(file.size);return}
-        if(Number(state.nextOffset)>offset){offset=Number(state.nextOffset);if(onProgress)onProgress(offset);advanced=true;lastError=null;break}
+        const next=Number(state.nextOffset);
+        if(Number.isFinite(next)&&next>offset){offset=next;if(onProgress)onProgress(offset);advanced=true;lastError=null;break}
         lastError=new Error('O Google Drive não confirmou o bloco enviado.');
       }catch(error){
         lastError=error;
@@ -504,7 +507,7 @@ async function uploadFileResumable(file,sessionUrl,onProgress){
           if(state.complete){if(onProgress)onProgress(file.size);return}
           if(Number(state.nextOffset)>offset){offset=Number(state.nextOffset);if(onProgress)onProgress(offset);advanced=true;lastError=null;break}
         }catch(queryError){
-          if(error?.message!=='UPLOAD_RESPONSE_UNAVAILABLE')lastError=error;else lastError=queryError;
+          lastError=error?.message?error:queryError;
         }
         if(attempt<3)await new Promise(r=>setTimeout(r,700*attempt));
       }
@@ -520,7 +523,11 @@ async function uploadDescriptor(desc,order,completedBefore,totalBytes,onOverallP
     fileName:desc.fileName,mimeType:desc.file.type||'application/octet-stream',size:desc.file.size
   });
   if(session.alreadyUploaded){onOverallProgress(completedBefore+desc.file.size,totalBytes,`${desc.label.replace('...','')} já recebido.`);return}
-  await uploadFileResumable(desc.file,session.sessionUrl,loaded=>onOverallProgress(completedBefore+loaded,totalBytes,desc.label));
+  try{
+    await uploadFileResumable(desc.file,session.sessionUrl,loaded=>onOverallProgress(completedBefore+loaded,totalBytes,desc.label));
+  }catch(error){
+    throw new Error(`${desc.label.replace('...','')}: ${error?.message||'falha no envio.'}`);
+  }
 }
 function openSuccessModal(orderId){
   const modal=$('downloadModal'),codeEl=$('orderCode');if(codeEl)codeEl.textContent=orderId||'Pedido enviado';
@@ -640,6 +647,8 @@ initAmbientParticles();
 $('sendButton').addEventListener('click',send);render();
 </script>
 
+
+<div class="site-version" id="siteVersion">Sistema de envio V2.0</div>
 
 <div class="download-modal" id="downloadModal" role="dialog" aria-modal="true" aria-labelledby="downloadModalTitle" aria-hidden="true">
   <div class="download-dialog">
