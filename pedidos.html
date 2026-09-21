@@ -119,6 +119,8 @@ body>header,body>.wrap,body>.footer{position:relative;z-index:1}
 
 /* Materiais do projeto */
 .upload-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#artistPhotosBlock{grid-column:1/-1;width:100%;min-width:0}
+#artistPhotosBlock>.upload-card{min-width:0}
 .upload-card{border:1px solid var(--line);border-radius:14px;background:var(--card2);padding:15px;display:flex;flex-direction:column;gap:10px}
 .upload-card.full{grid-column:1/-1}
 .upload-card label{font-weight:800;font-size:14px}
@@ -202,6 +204,8 @@ body.modal-open{overflow:hidden}.download-modal{position:fixed;inset:0;z-index:1
 </section>
 <section class="section" aria-labelledby="materialsTitle"><div class="sectionhead"><span class="step">05</span><div><h2 id="materialsTitle">Materiais do projeto</h2><p>Anexe a música, entre 4 e 8 fotos do artista e as referências de figurino.</p></div></div><p class="required-note">Campos destacados em azul são obrigatórios.</p><div class="upload-grid">
   <div class="upload-card required-field full"><label for="audioFile">Música / áudio final * <span class="required-badge">Obrigatório</span></label><input id="audioFile" type="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.flac" required><small>Envie de preferência o arquivo final que será usado no vídeo. MP3, WAV, M4A, AAC ou FLAC.</small></div>
+  <div class="upload-card required-field full" id="workedBeforeCard"><label>Você já trabalhou comigo antes? * <span class="required-badge">Obrigatório</span></label><div class="featchoices"><label><input type="radio" name="workedBefore" value="yes" required> Sim</label><label><input type="radio" name="workedBefore" value="no" required> Não</label></div><small>Se você já realizou um projeto comigo e suas fotos estão arquivadas, não é necessário enviá-las novamente.</small></div>
+  <div id="artistPhotosBlock" class="upload-grid full hidden">
   <div class="upload-card full photo-guidance"><div class="photo-example"><svg viewBox="0 0 80 80" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3"><circle cx="40" cy="26" r="14"/><path d="M19 68c2-17 10-25 21-25s19 8 21 25"/><path d="M34 25h2M44 25h2M36 33c2 2 6 2 8 0"/></svg><div><b>Inclua fotos de frente</b><small>Rosto bem visível, centralizado e com boa iluminação.</small></div></div><div class="photo-example"><svg viewBox="0 0 80 80" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3"><path d="M31 18c13-5 25 4 24 17-1 7-5 9-9 12-2 2-2 7-1 10H27c3-8 1-12-2-17-5-8-2-18 6-22Z"/><path d="M50 29h7l-6 4M46 24h2"/><path d="M20 68c3-9 10-13 24-13 12 0 18 4 21 13"/></svg><div><b>Inclua fotos de lado / perfil</b><small>Perfil visível, boa luz e contorno do rosto bem definido.</small></div></div></div>
   <div class="upload-card full"><strong class="photos-title">Fotos do artista</strong><small>Envie no mínimo 4 e no máximo 8 fotos. Misture ângulos de frente, lado/perfil e outras referências úteis. Escolha imagens nítidas, sem filtros pesados e com o rosto bem visível.</small></div>
   <div class="upload-card required-field"><label for="photo1">Foto 1 * <span class="required-badge">Obrigatório</span></label><input id="photo1" class="artist-photo" type="file" accept="image/jpeg,image/png,image/webp" required></div>
@@ -212,6 +216,7 @@ body.modal-open{overflow:hidden}.download-modal{position:fixed;inset:0;z-index:1
   <div class="upload-card"><label for="photo6">Foto 6 <span class="optional">(opcional)</span></label><input id="photo6" class="artist-photo" type="file" accept="image/jpeg,image/png,image/webp"></div>
   <div class="upload-card"><label for="photo7">Foto 7 <span class="optional">(opcional)</span></label><input id="photo7" class="artist-photo" type="file" accept="image/jpeg,image/png,image/webp"></div>
   <div class="upload-card"><label for="photo8">Foto 8 <span class="optional">(opcional)</span></label><input id="photo8" class="artist-photo" type="file" accept="image/jpeg,image/png,image/webp"></div>
+  </div>
 </div><p class="file-note">Os arquivos ficam somente no seu aparelho. O site não faz upload deles para o GitHub.</p></section>
 
 <section class="section" aria-labelledby="outfitTitle"><div class="sectionhead"><span class="step">06</span><div><h2 id="outfitTitle">Figurino e referências</h2><p>Envie referências da roupa e explique como ela deve aparecer no vídeo.</p></div></div><div class="upload-grid">
@@ -247,7 +252,7 @@ const COUPONS=[
 let currentCoupon=null;
 // Configure com o número completo, só dígitos (55 + DDD + número), para abrir diretamente a conversa com Rick.
 const WHATSAPP_NUMBER='5533998544308';
-const state={duration:2,people:0,looks:0,ratio:'9:16',feat:false,projectType:'Videoclipe'};
+const state={duration:2,people:0,looks:0,ratio:'9:16',feat:false,projectType:'Videoclipe',workedBefore:null};
 let outfitFiles=[];
 const $=id=>document.getElementById(id);
 const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n);
@@ -332,7 +337,7 @@ function pdfFile(name){
   let y=82;
   y=sectionTitle('Projeto',y);
   y=row('Tipo de projeto',projectType,'Artista no vídeo',artist,y);
-  y=row('Musica / projeto',project,null,null,y);
+  y=row('Musica / projeto',project,'Ja trabalhou comigo?',state.workedBefore==='yes'?'Sim - usar fotos arquivadas':'Nao',y);
   if(state.feat)y=row('Feat','Sim','Artista convidado',feat,y);else y=row('Feat','Nao',null,null,y);
   if(outfitNotes){
     y=ensure(y,28);label('Figurino / roupa',M,y+3);doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(...ink);
@@ -404,7 +409,7 @@ async function createStoredZip(entries){
 async function materialsZip(artist,pdf){
   const audio=$('audioFile').files[0];
   const photos=Array.from({length:8},(_,i)=>$(`photo${i+1}`).files[0]).filter(Boolean);
-  if(!audio||photos.length<4)throw new Error('MATERIALS_REQUIRED');
+  if(!audio||(state.workedBefore!=='yes'&&photos.length<4))throw new Error('MATERIALS_REQUIRED');
   const ext=f=>{const n=f.name||'';const i=n.lastIndexOf('.');return i>=0?n.slice(i).toLowerCase():''};
   const entries=[{name:'pedido.pdf',file:pdf},{name:`audio/musica${ext(audio)}`,file:audio}];
   photos.forEach((f,i)=>entries.push({name:`fotos-artista/foto-${String(i+1).padStart(2,'0')}${ext(f)}`,file:f}));
@@ -421,9 +426,10 @@ async function send(){
   if(state.feat&&!featArtist.value.trim()){featArtist.required=true;featArtist.focus();featArtist.reportValidity();return}
   featArtist.required=false;
   const audio=$('audioFile');if(!audio.files.length){audio.focus();audio.reportValidity();return}
+  if(!state.workedBefore){const firstWorked=document.querySelector('input[name="workedBefore"]');firstWorked?.focus();firstWorked?.reportValidity();$('sendStatus').textContent='Informe se você já trabalhou comigo antes.';return}
   const photoInputs=Array.from({length:8},(_,i)=>$(`photo${i+1}`));
   const photoCount=photoInputs.filter(el=>el.files.length).length;
-  if(photoCount<4){const firstEmpty=photoInputs.find(el=>!el.files.length)||photoInputs[0];firstEmpty.focus();firstEmpty.reportValidity();$('sendStatus').textContent='Envie pelo menos 4 fotos do artista antes de continuar.';return}
+  if(state.workedBefore!=='yes'&&photoCount<4){const firstEmpty=photoInputs.find(el=>!el.files.length)||photoInputs[0];firstEmpty.focus();firstEmpty.reportValidity();$('sendStatus').textContent='Envie pelo menos 4 fotos do artista antes de continuar.';return}
   const button=$('sendButton'),status=$('sendStatus');button.disabled=true;status.textContent='Gerando seu pedido...';
   try{
     const pdf=pdfFile(name.value.trim());
@@ -432,7 +438,7 @@ async function send(){
     status.textContent='Pedido gerado com sucesso.';
     openDownloadModal(zip.name);
   }catch(e){
-    if(e.message==='MATERIALS_REQUIRED')status.textContent='Anexe a música e pelo menos 4 fotos do artista antes de continuar.';
+    if(e.message==='MATERIALS_REQUIRED')status.textContent=state.workedBefore==='yes'?'Anexe a música antes de continuar.':'Anexe a música e pelo menos 4 fotos do artista antes de continuar.';
     else if(e.message==='ZIP_TOO_LARGE')status.textContent='Um dos arquivos é grande demais para entrar no ZIP. Tente uma versão menor do arquivo.';
     else status.textContent=`Não foi possível gerar o pedido. Erro: ${e?.message||e?.name||'desconhecido'}.`;
     console.error('Falha ao gerar pedido:',e)
@@ -444,7 +450,7 @@ function openDownloadModal(filename){
   if(modal){modal.classList.add('show');modal.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');$('downloadModalClose')?.focus()}
 }
 function closeDownloadModal(){const modal=$('downloadModal');if(modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open')}}
-$('durations').addEventListener('click',e=>{const button=e.target.closest('[data-duration]');if(button&&!button.disabled){state.duration=Number(button.dataset.duration);render()}});document.querySelectorAll('[data-counter]').forEach(button=>button.addEventListener('click',()=>{const field=button.dataset.counter;state[field]=Math.max(0,Math.min(30,state[field]+Number(button.dataset.delta)));render()}));document.querySelectorAll('input[name="projectType"]').forEach(input=>input.addEventListener('change',()=>{state.projectType=input.value;normalizeDurationForProject();render()}));document.querySelectorAll('input[name="ratio"]').forEach(input=>input.addEventListener('change',()=>{state.ratio=input.value;render()}));document.querySelectorAll('input[name="feat"]').forEach(input=>input.addEventListener('change',()=>{state.feat=input.value==='yes';$('featField').classList.toggle('hidden',!state.feat);$('featArtist').required=state.feat;if(!state.feat)$('featArtist').value=''}));
+$('durations').addEventListener('click',e=>{const button=e.target.closest('[data-duration]');if(button&&!button.disabled){state.duration=Number(button.dataset.duration);render()}});document.querySelectorAll('[data-counter]').forEach(button=>button.addEventListener('click',()=>{const field=button.dataset.counter;state[field]=Math.max(0,Math.min(30,state[field]+Number(button.dataset.delta)));render()}));document.querySelectorAll('input[name="projectType"]').forEach(input=>input.addEventListener('change',()=>{state.projectType=input.value;normalizeDurationForProject();render()}));document.querySelectorAll('input[name="ratio"]').forEach(input=>input.addEventListener('change',()=>{state.ratio=input.value;render()}));document.querySelectorAll('input[name="feat"]').forEach(input=>input.addEventListener('change',()=>{state.feat=input.value==='yes';$('featField').classList.toggle('hidden',!state.feat);$('featArtist').required=state.feat;if(!state.feat)$('featArtist').value=''}));document.querySelectorAll('input[name="workedBefore"]').forEach(input=>input.addEventListener('change',()=>{state.workedBefore=input.value;const hidePhotos=state.workedBefore==='yes';$('artistPhotosBlock').classList.toggle('hidden',hidePhotos);Array.from({length:8},(_,i)=>$(`photo${i+1}`)).forEach((el,i)=>{el.required=!hidePhotos&&i<4});if(hidePhotos){$('sendStatus').textContent='';}}));
 function renderOutfitFiles(){
   const list=$('outfitFilesList'),count=$('outfitCount');
   if(!list||!count)return;
