@@ -82,7 +82,7 @@ body>header,body>.wrap,body>.footer{position:relative;z-index:1}
 }
 </style>
 <style>
-#extrasTitle + .included-highlight,.sectionhead .included-highlight{margin-top:8px;padding:10px 13px;border-left:3px solid var(--gold);border-radius:7px;background:#f5bb4512;color:#eef2f4!important;font-size:13px!important;line-height:1.45}.included-highlight strong{color:var(--gold);font-weight:800}
+#extrasTitle + .included-highlight,.sectionhead .included-highlight{margin-top:8px;padding:13px 16px;border-left:4px solid var(--gold);border-radius:7px;background:#f5bb4518;color:#eef2f4!important;font-size:15px!important;line-height:1.45}.included-highlight strong{color:var(--gold);font-weight:800}.field-hint{display:block;margin-top:7px;color:var(--muted);font-size:12px;line-height:1.45}
 </style>
 
 <style>
@@ -192,8 +192,8 @@ body.modal-open{overflow:hidden}.download-modal{position:fixed;inset:0;z-index:1
 <div class="layout"><main class="main">
 <section class="section" aria-labelledby="projectTypeTitle"><div class="sectionhead"><span class="step">01</span><div><h2 id="projectTypeTitle">Tipo de projeto <span class="required-badge">Obrigatório</span></h2><p>Selecione o tipo do trabalho.</p></div></div><div class="projectchoices" role="group" aria-label="Tipo de projeto"><label class="project-option"><input type="radio" name="projectType" value="Videoclipe" checked><b>Videoclipe</b></label><label class="project-option"><input type="radio" name="projectType" value="Visualizer"><b>Visualizer</b></label><label class="project-option"><input type="radio" name="projectType" value="Redes Sociais"><span class="project-copy"><b>Redes Sociais</b><small>Ex.: promoções, anúncios, trailers e conteúdo para mídias sociais.</small></span></label></div></section>
 <section class="section" aria-labelledby="durationTitle"><div class="sectionhead"><span class="step">02</span><div><h2 id="durationTitle">Duração <span class="required-badge">Obrigatório</span></h2><p>Selecione o tempo do vídeo final.</p></div></div><div id="durations" class="durations" role="group" aria-label="Duração do vídeo"></div><div class="ratio"><h3>Proporção do vídeo <span class="required-badge">Obrigatório</span></h3><div class="ratiochoices"><label class="ratio-option"><input type="radio" name="ratio" value="9:16" checked><span class="device-icon vertical-device" aria-hidden="true"></span><span><b>9:16</b><small>Vertical</small></span></label><label class="ratio-option"><input type="radio" name="ratio" value="16:9"><span class="device-icon horizontal-device" aria-hidden="true"></span><span><b>16:9</b><small>Horizontal</small></span></label><label class="ratio-option"><input type="radio" name="ratio" value="1:1"><span class="device-icon square-device" aria-hidden="true"></span><span><b>1:1</b><small>Quadrado</small></span></label></div></div></section>
-<section class="section" aria-labelledby="extrasTitle"><div class="sectionhead"><span class="step">03</span><div><h2 id="extrasTitle">Protagonistas e looks</h2><p class="included-highlight"><strong>Até 2 protagonistas</strong> e <strong>1 look por protagonista</strong> incluídos no valor base.</p></div></div><div class="extras"><div class="extra"><div><strong>Protagonista adicional + 1 look</strong><small>R$ 15 por protagonista além dos 2 incluídos</small></div><div class="counter"><button type="button" data-counter="people" data-delta="-1" aria-label="Remover protagonista adicional">−</button><output id="peopleCount">0</output><button type="button" data-counter="people" data-delta="1" aria-label="Adicionar protagonista adicional">+</button></div></div><div class="extra"><div><strong>Look adicional</strong><small>R$ 10 por look extra, para qualquer personagem</small></div><div class="counter"><button type="button" data-counter="looks" data-delta="-1" aria-label="Remover look adicional">−</button><output id="looksCount">0</output><button type="button" data-counter="looks" data-delta="1" aria-label="Adicionar look adicional">+</button></div></div></div></section>
-<section class="section" aria-labelledby="detailsTitle"><div class="sectionhead"><span class="step">04</span><div><h2 id="detailsTitle">Identificação do projeto</h2><p>Esses dados vão junto no PDF do pedido.</p></div></div><div class="field required-field"><label for="client">Nome artístico / nome do cliente * <span class="required-badge">Obrigatório</span></label><input id="client" type="text" placeholder="Nome artístico ou nome do cliente" autocomplete="name" required maxlength="100"></div><div class="field"><label>Esse nome deve aparecer no vídeo?</label><div class="featchoices"><label><input type="radio" name="artistDisplay" value="no" checked> Não</label><label><input type="radio" name="artistDisplay" value="yes"> Sim</label></div></div><div class="field required-field"><label for="project">Nome da música / projeto * <span class="required-badge">Obrigatório</span></label><input id="project" type="text" placeholder="Nome da música ou projeto" required maxlength="120"></div><div class="field"><label>Esse título deve aparecer no vídeo?</label><div class="featchoices"><label><input type="radio" name="projectDisplay" value="no" checked> Não</label><label><input type="radio" name="projectDisplay" value="yes"> Sim</label></div></div><div class="field"><label>Vai ter feat?</label><div class="featchoices"><label><input type="radio" name="feat" value="no" checked> Não</label><label><input type="radio" name="feat" value="yes"> Sim</label></div></div><div class="field required-field hidden" id="featField"><label for="featArtist">Nome artístico do feat * <span class="required-badge">Obrigatório</span></label><input id="featArtist" type="text" placeholder="Nome artístico do feat" maxlength="120"><div class="field" style="margin-top:16px"><label>O nome do feat deve aparecer no vídeo?</label><div class="featchoices"><label><input type="radio" name="featDisplay" value="no" checked> Não</label><label><input type="radio" name="featDisplay" value="yes"> Sim</label></div></div></div>
+<section class="section" aria-labelledby="extrasTitle"><div class="sectionhead"><span class="step">03</span><div><h2 id="extrasTitle">Protagonistas e looks</h2><p class="included-highlight"><strong>Até 2 protagonistas + 1 look para cada</strong> já incluídos no valor base.</p></div></div><div class="extras"><div class="extra"><div><strong>Quantos protagonistas no vídeo?</strong><small>Até 2 incluídos. A partir do 3º: R$ 15 por protagonista, com 1 look.</small></div><div class="counter"><button type="button" data-counter="people" data-delta="-1" aria-label="Remover um protagonista">−</button><output id="peopleCount" aria-label="Total de protagonistas">1</output><button type="button" data-counter="people" data-delta="1" aria-label="Adicionar um protagonista">+</button></div></div><div class="extra"><div><strong>Look adicional</strong><small>R$ 10 por look extra, para qualquer personagem</small></div><div class="counter"><button type="button" data-counter="looks" data-delta="-1" aria-label="Remover look adicional">−</button><output id="looksCount">0</output><button type="button" data-counter="looks" data-delta="1" aria-label="Adicionar look adicional">+</button></div></div></div></section>
+<section class="section" aria-labelledby="detailsTitle"><div class="sectionhead"><span class="step">04</span><div><h2 id="detailsTitle">Identificação do projeto</h2><p>Esses dados vão junto no PDF do pedido.</p></div></div><div class="field required-field"><label for="client">Nome do artista ou solicitante * <span class="required-badge">Obrigatório</span></label><input id="client" type="text" placeholder="Digite apenas um nome" aria-describedby="clientHint" autocomplete="name" required maxlength="100"><small id="clientHint" class="field-hint">Use um nome para identificar o pedido. Não junte nome artístico e nome civil neste campo.</small></div><div class="field"><label>Esse nome deve aparecer no vídeo?</label><div class="featchoices"><label><input type="radio" name="artistDisplay" value="no" checked> Não</label><label><input type="radio" name="artistDisplay" value="yes"> Sim</label></div></div><div class="field required-field"><label for="project">Nome da música / projeto * <span class="required-badge">Obrigatório</span></label><input id="project" type="text" placeholder="Nome da música ou projeto" required maxlength="120"></div><div class="field"><label>Esse título deve aparecer no vídeo?</label><div class="featchoices"><label><input type="radio" name="projectDisplay" value="no" checked> Não</label><label><input type="radio" name="projectDisplay" value="yes"> Sim</label></div></div><div class="field"><label>Vai ter feat?</label><div class="featchoices"><label><input type="radio" name="feat" value="no" checked> Não</label><label><input type="radio" name="feat" value="yes"> Sim</label></div></div><div class="field required-field hidden" id="featField"><label for="featArtist">Nome artístico do feat * <span class="required-badge">Obrigatório</span></label><input id="featArtist" type="text" placeholder="Nome artístico do feat" maxlength="120"><div class="field" style="margin-top:16px"><label>O nome do feat deve aparecer no vídeo?</label><div class="featchoices"><label><input type="radio" name="featDisplay" value="no" checked> Não</label><label><input type="radio" name="featDisplay" value="yes"> Sim</label></div></div></div>
 </section>
 
 
@@ -242,19 +242,10 @@ const COUPONS=[
 let currentCoupon=null;
 // Configure com o número completo, só dígitos (55 + DDD + número), para abrir diretamente a conversa com Rick.
 const WHATSAPP_NUMBER='5533998544308';
-const state={duration:2,people:0,looks:0,ratio:'9:16',feat:false,projectType:'Videoclipe'};
+const state={duration:2,people:1,looks:0,ratio:'9:16',feat:false,projectType:'Videoclipe'};
 let lastGeneratedPdf=null;
 const $=id=>document.getElementById(id);
 const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n);
-function isDurationAllowed(index){
-  if(state.projectType==='Videoclipe')return index>=1;
-  if(state.projectType==='Visualizer'||state.projectType==='Redes Sociais')return index<=3;
-  return true;
-}
-function normalizeDurationForProject(){
-  if(isDurationAllowed(state.duration))return;
-  state.duration=2;
-}
 function getCoupon(code){
   const normalized=(code||'').trim().toUpperCase();
   if(!normalized)return null;
@@ -268,7 +259,7 @@ function getCoupon(code){
 }
 function calc(){
   const base=prices[state.duration][1];
-  const extras=state.people*15+state.looks*10;
+  const extras=Math.max(0,state.people-2)*15+state.looks*10;
   const subtotal=base+extras;
   const discount=currentCoupon
     ? Math.round(subtotal*(currentCoupon.discountPercent/100)*100)/100
@@ -277,12 +268,19 @@ function calc(){
 }
 function render(){
   const sum=calc();
-  $('durations').innerHTML=prices.map(([label,value],i)=>{const disabled=!isDurationAllowed(i);return `<button type="button" class="duration ${state.duration===i?'active':''}" data-duration="${i}" aria-pressed="${state.duration===i}" ${disabled?'disabled aria-disabled="true"':''}><span>${label}<small class="duration-range"><b>${i===0?'Duração:':'Faixa:'}</b> ${durationRanges[i][0]}</small><small class="duration-tolerance">Tolerância: até ${durationRanges[i][1]}</small></span><strong>${money(value)}</strong></button>`}).join('');
+  $('durations').innerHTML=prices.map(([label,value],i)=>`<button type="button" class="duration ${state.duration===i?'active':''}" data-duration="${i}" aria-pressed="${state.duration===i}"><span>${label}<small class="duration-range"><b>${i===0?'Duração:':'Faixa:'}</b> ${durationRanges[i][0]}</small><small class="duration-tolerance">Tolerância: até ${durationRanges[i][1]}</small></span><strong>${money(value)}</strong></button>`).join('');
   $('peopleCount').value=state.people;
   $('looksCount').value=state.looks;
   $('durationLabel').textContent=`${prices[state.duration][0]} · ${state.ratio}`;
   $('basePrice').textContent=money(sum.base);
-  $('extrasRows').innerHTML=(state.people?`<div class="sumrow"><span>${state.people} protagonista(s) adicional(is) + look</span><strong>${money(state.people*15)}</strong></div>`:'')+(state.looks?`<div class="sumrow"><span>${state.looks} look(s) adicional(is)</span><strong>${money(state.looks*10)}</strong></div>`:'');
+  const includedPeople=Math.min(state.people,2);
+  const additionalPeople=Math.max(0,state.people-2);
+  const includedLabel=includedPeople===0?'Nenhum protagonista selecionado':includedPeople===1?'1 protagonista · 1 look':`${includedPeople} protagonistas · 1 look cada`;
+  const extraPeopleLabel=additionalPeople===1?'1 protagonista adicional · 1 look':`${additionalPeople} protagonistas adicionais · 1 look cada`;
+  const extraLooksLabel=state.looks===1?'1 look adicional':`${state.looks} looks adicionais`;
+  $('extrasRows').innerHTML=`<div class="sumrow"><span>${includedLabel}</span><strong>${includedPeople?'Incluso':'—'}</strong></div>`
+    +(additionalPeople?`<div class="sumrow"><span>${extraPeopleLabel}</span><strong>+ ${money(additionalPeople*15)}</strong></div>`:'')
+    +(state.looks?`<div class="sumrow"><span>${extraLooksLabel}</span><strong>${money(state.looks*10)}</strong></div>`:'');
   $('discountRow').classList.toggle('hidden',!sum.discount);
   if(sum.discount){
     $('discountLabel').textContent=`Cupom ${currentCoupon.code.toUpperCase()} (${currentCoupon.discountPercent}%)`;
@@ -329,7 +327,7 @@ function pdfFile(name){
   try{const img=document.querySelector('.mascot img');if(img?.src)doc.addImage(img.src,'PNG',W-58,25,37,37,undefined,'FAST')}catch(e){}
   let y=82;
   y=sectionTitle('Projeto',y);
-  y=row('Tipo de projeto',projectType,'Nome artistico / cliente',artist,y);
+  y=row('Tipo de projeto',projectType,'Artista / solicitante',artist,y);
   y=row('Nome aparece no video',artistDisplay,'Musica / projeto',project,y);
   y=row('Titulo aparece no video',projectDisplay,'Feat',state.feat?'Sim':'Nao',y);
   if(state.feat)y=row('Artista convidado',feat,'Nome do feat aparece',featDisplay,y);
@@ -339,10 +337,11 @@ function pdfFile(name){
   }
   y=sectionTitle('Formato do video',y);
   y=row('Duracao',prices[state.duration][0],'Proporcao',state.ratio,y);
-  y=row('Incluso','Ate 2 protagonistas + 1 look cada','Protagonistas adicionais',String(state.people),y);
+  y=row('Protagonistas no video',String(state.people),'Inclusos no valor','Ate 2, 1 look cada',y);
   if(state.looks)y=row('Looks adicionais',String(state.looks),null,null,y);
   y=sectionTitle('Investimento',y+2);
-  const items=[['Video',money(base)],...(state.people?[`Protagonistas adicionais (${state.people})`,money(state.people*15)]:[]),...(state.looks?[`Looks adicionais (${state.looks})`,money(state.looks*10)]:[])];
+  const additionalPeople=Math.max(0,state.people-2);
+  const items=[['Video',money(base)],...(additionalPeople?[[`Protagonistas extras (${additionalPeople})`,money(additionalPeople*15)]]:[]),...(state.looks?[[`Looks adicionais (${state.looks})`,money(state.looks*10)]]:[])];
   if(discount&&currentCoupon)items.push([`Cupom ${currentCoupon.code.toUpperCase()} (${currentCoupon.discountPercent}%)`,`- ${money(discount)}`]);
   items.forEach(([a,b])=>{y=ensure(y,10);doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(...muted);doc.text(safePdfText(a),M,y);doc.setFont('helvetica','bold');doc.setTextColor(...ink);doc.text(safePdfText(b),W-M,y,{align:'right'});doc.setDrawColor(...line);doc.line(M,y+4,W-M,y+4);y+=11});
   y=ensure(y,32);doc.setFillColor(...ink);doc.roundedRect(M,y,contentW,28,4,4,'F');doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);doc.setFontSize(9);doc.text('TOTAL',M+7,y+9);doc.setFontSize(20);doc.setTextColor(...gold);doc.text(safePdfText(money(total)),W-M-7,y+11,{align:'right'});doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(205,211,215);doc.text(`Entrada 50%: ${money(total/2)}   |   Saldo antes da entrega: ${money(total/2)}`,M+7,y+21);y+=38;
@@ -398,7 +397,7 @@ function openDownloadModal(filename){
 }
 function closeDownloadModal(){const modal=$('downloadModal');if(modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open')}}
 
-$('durations').addEventListener('click',e=>{const button=e.target.closest('[data-duration]');if(button&&!button.disabled){state.duration=Number(button.dataset.duration);render()}});document.querySelectorAll('[data-counter]').forEach(button=>button.addEventListener('click',()=>{const field=button.dataset.counter;state[field]=Math.max(0,Math.min(30,state[field]+Number(button.dataset.delta)));render()}));document.querySelectorAll('input[name="projectType"]').forEach(input=>input.addEventListener('change',()=>{state.projectType=input.value;normalizeDurationForProject();render()}));document.querySelectorAll('input[name="ratio"]').forEach(input=>input.addEventListener('change',()=>{state.ratio=input.value;render()}));document.querySelectorAll('input[name="feat"]').forEach(input=>input.addEventListener('change',()=>{state.feat=input.value==='yes';$('featField').classList.toggle('hidden',!state.feat);$('featArtist').required=state.feat;if(!state.feat){$('featArtist').value='';const featDisplayNo=document.querySelector('input[name="featDisplay"][value="no"]');if(featDisplayNo)featDisplayNo.checked=true}}));
+$('durations').addEventListener('click',e=>{const button=e.target.closest('[data-duration]');if(button){state.duration=Number(button.dataset.duration);render()}});document.querySelectorAll('[data-counter]').forEach(button=>button.addEventListener('click',()=>{const field=button.dataset.counter;state[field]=Math.max(0,Math.min(30,state[field]+Number(button.dataset.delta)));render()}));document.querySelectorAll('input[name="projectType"]').forEach(input=>input.addEventListener('change',()=>{state.projectType=input.value;render()}));document.querySelectorAll('input[name="ratio"]').forEach(input=>input.addEventListener('change',()=>{state.ratio=input.value;render()}));document.querySelectorAll('input[name="feat"]').forEach(input=>input.addEventListener('change',()=>{state.feat=input.value==='yes';$('featField').classList.toggle('hidden',!state.feat);$('featArtist').required=state.feat;if(!state.feat){$('featArtist').value='';const featDisplayNo=document.querySelector('input[name="featDisplay"][value="no"]');if(featDisplayNo)featDisplayNo.checked=true}}));
 $('couponApply').addEventListener('click',()=>{
   const status=$('couponStatus');
   const typed=$('couponInput').value.trim();
